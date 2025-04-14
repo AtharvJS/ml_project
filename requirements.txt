@@ -2,4 +2,9 @@ pandas
 numpy
 seaborn
 pytz
--e .
+matplotlib
+scikit-learn
+catboost
+xgboost
+dill
+#-e .
