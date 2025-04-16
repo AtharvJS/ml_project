@@ -47,27 +47,7 @@ class ModelTrainer:
         'Catboosting Classifier' : CatBoostRegressor(verbose=False),
         'AdaBoost Classifier' : AdaBoostRegressor()
       }
-
-      # if 'X_train' in locals():
-      #     print("X_train is present")
-      # else:
-      #     print("X_train is not present")
-
-      # if 'X_test' in locals():
-      #     print("X_test is present")
-      # else:
-      #     print("X_test is not present")
-
-      # if 'y_train' in locals():
-      #     print("y_train is present")
-      # else:
-      #     print("y_train is not present")
-
-      # if 'y_test' in locals():
-      #     print("y_test is present")
-      # else:
-      #     print("y_test is not present")
-
+      
       model_report:dict=evaluate_model(X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test, models=models)
       
       # To get best model score from dictionary
