@@ -13,6 +13,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
+from sklearn.model_selection import GridSearchCV
 from xgboost import XGBRegressor
 
 from src.exception import CustomException
@@ -42,33 +43,45 @@ class ModelTrainer:
         'Decision Tree' : DecisionTreeRegressor(),
         'Gradient Boost' : GradientBoostingRegressor(),
         'Linear Regression' : LinearRegression(),
-        'K-Neighbours Classifier' : KNeighborsRegressor(),
+        'K-Neighbors Classifier' : KNeighborsRegressor(),
         'XGBClassifier' : XGBRegressor(),
         'Catboosting Classifier' : CatBoostRegressor(verbose=False),
         'AdaBoost Classifier' : AdaBoostRegressor()
       }
 
-      # if 'X_train' in locals():
-      #     print("X_train is present")
-      # else:
-      #     print("X_train is not present")
+      params={
+        'Decision Tree':{
+          'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
+        },
+        'Random Forest':{
+          'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
+          'n_estimators':[8,16,32,64,128,256]
+        },
+        'Gradient Boost':{
+          'learning_rate':[.1,.01,.05,.001],
+          'subsample':[.6,.7,.75,.8,.85,.9],
+          'n_estimators':[8,16,32,64,128,256]
+        },
+        'Linear Regression':{},
+        'K-Neighbors Classifier':{
+          'n_neighbors':[5,7,9,11]
+        },
+        'XGBClassifier':{
+          'learning_rate':[.1,.01,.05,.001],
+          'n_estimators':[8,16,32,64,128,256]
+        },
+        'Catboosting Classifier':{
+          'depth':[6,8,10],
+          'learning_rate':[.01,.05,.1],
+          'iterations':[30,50,100]
+        },
+        'AdaBoost Classifier':{
+          'learning_rate':[.1,.01,.05,.001],
+          'n_estimators':[8,16,32,64,128,256]
+        }
+      }
 
-      # if 'X_test' in locals():
-      #     print("X_test is present")
-      # else:
-      #     print("X_test is not present")
-
-      # if 'y_train' in locals():
-      #     print("y_train is present")
-      # else:
-      #     print("y_train is not present")
-
-      # if 'y_test' in locals():
-      #     print("y_test is present")
-      # else:
-      #     print("y_test is not present")
-
-      model_report:dict=evaluate_model(X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test, models=models)
+      model_report:dict=evaluate_model(X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test, models=models, param=params)
       
       # To get best model score from dictionary
       best_model_score = max(sorted(model_report.values()))
